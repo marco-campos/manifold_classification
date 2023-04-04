@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import './InputField.css';
 import schemeChecks from './SchemeChecks.js'; 
 import schemeOperations from './SchemeOperations';
+import manifoldTests from './ManifoldTests';
 
 function InputField() {
   const [inputValue, setInputValue] = useState('');
   const [displayValue, setDisplayValue] = useState('');
   const [currentType, setCurrentType] = useState('')
+  const [manifoldClass, setManifoldClass] = useState('')
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -16,20 +18,25 @@ function InputField() {
     event.preventDefault();
     if (checkInputValidity(inputValue)) {
       const inputArray = schemeChecks.convertStringToArray(inputValue)
-      console.log(inputArray)
-      console.log("Proper Scheme?", schemeChecks.isProper(inputArray))
       if (schemeChecks.isProper(inputArray)){
         if (schemeOperations.isTorusType(inputArray)){
             setCurrentType("Torus")
+            if (inputArray.length === 4){
+                if (manifoldTests.checkSphere(inputArray)){
+                    setManifoldClass('S^2')
+                } else if (manifoldTests.checkTorus(inputArray)){
+                    setManifoldClass('T^2')
+                }
+            }
+            
         }else{
             setCurrentType("Projective")
+
         }
-        console.log("Is Torus Type?", schemeOperations.isTorusType(inputArray))
         setDisplayValue(inputArray);
         setInputValue('');
       } else{
          setDisplayValue('Not a proper scheme')
-         console.log("not a proper scheme")
          setInputValue('')
       }
      } else {
@@ -65,7 +72,8 @@ function InputField() {
         <input type="text" value={inputValue} onChange={handleInputChange} />
       </form>
       {displayValue && <h2>{displayValue}</h2>}
-      {displayValue && <h2>Torus Type: {currentType}</h2>}
+      {displayValue && <h2>Manifold Type: {currentType}</h2>}
+      {displayValue && <h2>Manifold Classification: {manifoldClass}</h2>}
     </div>
   );
 }
