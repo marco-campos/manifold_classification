@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './InputField.css';
 import schemeChecks from './SchemeChecks.js'; 
+import schemeOperations from './SchemeOperations';
 
 function InputField() {
   const [inputValue, setInputValue] = useState('');
   const [displayValue, setDisplayValue] = useState('');
+  const [currentType, setCurrentType] = useState('')
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -15,8 +17,14 @@ function InputField() {
     if (checkInputValidity(inputValue)) {
       const inputArray = schemeChecks.convertStringToArray(inputValue)
       console.log(inputArray)
-      console.log(schemeChecks.isProper(inputArray))
+      console.log("Proper Scheme?", schemeChecks.isProper(inputArray))
       if (schemeChecks.isProper(inputArray)){
+        if (schemeOperations.isTorusType(inputArray)){
+            setCurrentType("Torus")
+        }else{
+            setCurrentType("Projective")
+        }
+        console.log("Is Torus Type?", schemeOperations.isTorusType(inputArray))
         setDisplayValue(inputArray);
         setInputValue('');
       } else{
@@ -57,6 +65,7 @@ function InputField() {
         <input type="text" value={inputValue} onChange={handleInputChange} />
       </form>
       {displayValue && <h2>{displayValue}</h2>}
+      {displayValue && <h2>Torus Type: {currentType}</h2>}
     </div>
   );
 }

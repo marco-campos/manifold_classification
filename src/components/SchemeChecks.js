@@ -28,22 +28,19 @@ const schemeChecks ={
       },
     
     isProper: (arr) => {
-        const elementCounts = {};
+        
+        const count = {};
         for (let i = 0; i < arr.length; i++) {
-          const element = arr[i];
-          if (element in elementCounts) {
-            elementCounts[element]++;
-          } else {
-            elementCounts[element] = 1;
-          }
+            const letter = arr[i].toLowerCase().replace("'", "");
+            count[letter] = (count[letter] || 0) + 1;
         }
-        console.log(elementCounts)
-        for (const element in elementCounts) {
-          if (elementCounts[element] !== 2) {
+        for (const letter in count) {
+            if (count[letter] !== 2) {
             return false;
-          }
+            }
         }
         return true;
+          
       }
 }
 
