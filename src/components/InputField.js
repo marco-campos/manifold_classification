@@ -18,20 +18,30 @@ function InputField() {
     event.preventDefault();
     if (checkInputValidity(inputValue)) {
       const inputArray = schemeChecks.convertStringToArray(inputValue)
-      if (schemeChecks.isProper(inputArray)){
+      if (schemeChecks.isProper(inputArray) && inputArray.length > 3){
+        console.log("Input: ", inputArray)
+        console.log("Test 77_3: ", schemeOperations.operation_77_3(inputArray))
         if (schemeOperations.isTorusType(inputArray)){
             setCurrentType("Torus")
             if (inputArray.length === 4){
+                
+                // rewrite if necessary.
+
                 if (manifoldTests.checkSphere(inputArray)){
                     setManifoldClass('S^2')
                 } else if (manifoldTests.checkTorus(inputArray)){
                     setManifoldClass('T^2')
                 }
+            } else{
+                // Check for connected sums
             }
             
         }else{
             setCurrentType("Projective")
+            // console.log("operation 77_2 : ", schemeOperations.operation_77_2(inputArray))
+            
 
+            // Need to rewrite until you reach (aa)(bb)...w1 where w1 is of torus type.
         }
         setDisplayValue(inputArray);
         setInputValue('');

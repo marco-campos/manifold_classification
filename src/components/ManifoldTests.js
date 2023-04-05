@@ -38,6 +38,12 @@ const manifoldTests = {
               return false;
             }
             return true;      
+    },
+    checkSumPP: (arr) =>{
+      // Checks for connected sum of projective planes
+    },
+    checkSumTori: (arr)=>{
+      // Checks for connected sum of torii
     }
     
 }
